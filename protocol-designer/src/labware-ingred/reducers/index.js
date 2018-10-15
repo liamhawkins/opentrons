@@ -80,15 +80,6 @@ const selectedContainerId = handleActions({
   CLOSE_WELL_SELECTION_MODAL: (): SelectedContainerId => null,
 }, null)
 
-type RenameLabwareFormModeState = boolean
-const renameLabwareFormMode = handleActions({
-  OPEN_RENAME_LABWARE_FORM: () => true,
-
-  CLOSE_RENAME_LABWARE_FORM: () => false,
-  CLOSE_INGREDIENT_SELECTOR: () => false,
-  EDIT_MODE_INGREDIENT_GROUP: () => false,
-}, false)
-
 type DrillDownLabwareId = string | null
 const drillDownLabwareId = handleActions({
   DRILL_DOWN_ON_LABWARE: (state, action: ActionType<typeof actions.drillDownOnLabware>): DrillDownLabwareId => action.payload,
@@ -306,7 +297,6 @@ export type RootState = {|
   selectedLiquidGroup: SelectedLiquidGroupState,
   ingredients: IngredientsState,
   ingredLocations: LocationsState,
-  renameLabwareFormMode: RenameLabwareFormModeState,
 |}
 
 // TODO Ian 2018-01-15 factor into separate files
@@ -320,7 +310,6 @@ const rootReducer = combineReducers({
   savedLabware,
   ingredients,
   ingredLocations,
-  renameLabwareFormMode,
 })
 
 // SELECTORS
@@ -497,8 +486,6 @@ const activeModals: Selector<ActiveModals> = createSelector(
   }
 )
 
-const getRenameLabwareFormMode = (state: BaseState) => rootSelector(state).renameLabwareFormMode
-
 const slotToMoveFrom = (state: BaseState) => rootSelector(state).moveLabwareMode
 
 const hasLiquid = (state: BaseState) => !isEmpty(getLiquidGroupsById(state))
@@ -521,7 +508,6 @@ export const selectors = {
   getDrillDownLabwareId,
 
   activeModals,
-  getRenameLabwareFormMode,
 
   slotToMoveFrom,
 

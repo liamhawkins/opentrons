@@ -42,7 +42,6 @@ const selectedWells = handleActions({
   CLOSE_INGREDIENT_SELECTOR: () => selectedWellsInitialState,
   EDIT_INGREDIENT: () => selectedWellsInitialState,
   CLOSE_WELL_SELECTION_MODAL: () => selectedWellsInitialState,
-  OPEN_RENAME_LABWARE_FORM: () => selectedWellsInitialState,
 }, selectedWellsInitialState)
 
 type WellSelectionModalState = OpenWellSelectionModalPayload | null
