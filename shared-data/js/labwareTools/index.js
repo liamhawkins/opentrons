@@ -1,10 +1,14 @@
 // @flow
 import Ajv from 'ajv'
 import range from 'lodash/range'
+import round from 'lodash/round'
 
 import assignId from './assignId'
 import {toWellName} from '../helpers/index'
 import labwareSchema from '../../labware-json-schema/labware-schema.json'
+
+// TODO: Ian 2018-10-17 bundle this via webpack
+require('./json-schema-draft-07.json') // HACK
 
 type Metadata = {
   displayName: string,
@@ -82,10 +86,6 @@ const ajv = new Ajv({
   jsonPointers: true,
 })
 const validate = ajv.compile(labwareSchema)
-
-function round (value, decimals) {
-  return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals)
-}
 
 function determineOrdering (grid: Cell): Array<Array<string>> {
   const ordering = range(grid.column).map(colNum =>
