@@ -2,6 +2,7 @@
 import {createSelector} from 'reselect'
 import reduce from 'lodash/reduce'
 import get from 'lodash/get'
+import mapValues from 'lodash/mapValues'
 import {getPipetteModels, getPipette, getLabware} from '@opentrons/shared-data'
 
 import type {BaseState, Selector} from '../types'
@@ -20,6 +21,11 @@ export const pipettesById = createSelector(
 export const pipetteIdsByMount: Selector<*> = createSelector(
   rootSelector,
   pipettes => pipettes.byMount
+)
+
+export const pipettesByMount: Selector<*> = createSelector(
+  rootSelector,
+  pipettes => mapValues(pipettes.byMount, id => pipettes.byId[id])
 )
 
 function _getPipetteName (pipetteData): string {
