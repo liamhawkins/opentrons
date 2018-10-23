@@ -52,6 +52,38 @@ export type PipetteReducerState = {
   },
 }
 
+const handlePipetteCreationAction = (state: PipetteReducerState, action: {payload: NewProtocolFields}): PipetteReducerState => {
+  const {left, right} = action.payload
+
+  const leftPipette = (left.pipetteModel && left.tiprackModel)
+    ? createPipette('left', left.pipetteModel, left.tiprackModel)
+    : null
+
+  const rightPipette = (right.pipetteModel && right.tiprackModel)
+    ? createPipette('right', right.pipetteModel, right.tiprackModel)
+    : null
+
+  const newPipettes = ([leftPipette, rightPipette]).reduce(
+    (acc: {[string]: PipetteData}, pipette: ?PipetteData) => {
+      if (!pipette) return acc
+      return {
+        ...acc,
+        [pipette.id]: pipette,
+      }
+    }, {})
+
+  return {
+    byMount: {
+      left: leftPipette ? leftPipette.id : state.byMount.left,
+      right: rightPipette ? rightPipette.id : state.byMount.right,
+    },
+    byId: {
+      ...state.byId,
+      ...newPipettes,
+    },
+  }
+}
+
 const pipettes = handleActions({
   LOAD_FILE: (state: PipetteReducerState, action: LoadFileAction): PipetteReducerState => {
     const file = action.payload
@@ -74,40 +106,8 @@ const pipettes = handleActions({
         }, {}),
     }
   },
-  CREATE_NEW_PROTOCOL: (
-    state: PipetteReducerState,
-    action: {payload: NewProtocolFields}
-  ): PipetteReducerState => {
-    const {left, right} = action.payload
-
-    const leftPipette = (left.pipetteModel && left.tiprackModel)
-      ? createPipette('left', left.pipetteModel, left.tiprackModel)
-      : null
-
-    const rightPipette = (right.pipetteModel && right.tiprackModel)
-      ? createPipette('right', right.pipetteModel, right.tiprackModel)
-      : null
-
-    const newPipettes = ([leftPipette, rightPipette]).reduce(
-      (acc: {[string]: PipetteData}, pipette: ?PipetteData) => {
-        if (!pipette) return acc
-        return {
-          ...acc,
-          [pipette.id]: pipette,
-        }
-      }, {})
-
-    return {
-      byMount: {
-        left: leftPipette ? leftPipette.id : state.byMount.left,
-        right: rightPipette ? rightPipette.id : state.byMount.right,
-      },
-      byId: {
-        ...state.byId,
-        ...newPipettes,
-      },
-    }
-  },
+  CREATE_NEW_PROTOCOL: handlePipetteCreationAction,
+  EDIT_PIPETTES: handlePipetteCreationAction,
   SWAP_PIPETTES: (
     state: PipetteReducerState,
     action: {payload: NewProtocolFields}
