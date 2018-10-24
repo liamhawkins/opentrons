@@ -8,7 +8,7 @@ import type {LoadFileAction, NewProtocolFields} from '../load-file'
 import type {PipetteData} from '../step-generation'
 import type {FilePipette} from '../file-types'
 import {createPipette, createNewPipettesSlice} from './utils'
-import type {PipetteReducerState} from './types'
+import type {PipetteReducerState, UpdatePipettesAction} from './types'
 
 // TODO: BC 2018-10-24 remove pipettes.pipettes and hang byId and byMount
 // directly off of root.pipettes branch of redux store
@@ -37,7 +37,7 @@ const pipettes = handleActions({
   CREATE_NEW_PROTOCOL: (state: PipetteReducerState, action: {payload: NewProtocolFields}): PipetteReducerState => (
     createNewPipettesSlice(state, action.payload.left, action.payload.right)
   ),
-  UPDATE_PIPETTES: (state: PipetteReducerState, action: UpdatePipetteAction) => action.payload,
+  UPDATE_PIPETTES: (state: PipetteReducerState, action: UpdatePipettesAction) => action.payload,
   SWAP_PIPETTES: (
     state: PipetteReducerState,
     action: {payload: NewProtocolFields}
