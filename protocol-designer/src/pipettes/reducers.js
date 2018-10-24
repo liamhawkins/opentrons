@@ -10,6 +10,8 @@ import type {FilePipette} from '../file-types'
 import {createPipette, createNewPipettesSlice} from './utils'
 import type {PipetteReducerState} from './types'
 
+// TODO: BC 2018-10-24 remove pipettes.pipettes and hang byId and byMount
+// directly off of root.pipettes branch of redux store
 const pipettes = handleActions({
   LOAD_FILE: (state: PipetteReducerState, action: LoadFileAction): PipetteReducerState => {
     const file = action.payload
