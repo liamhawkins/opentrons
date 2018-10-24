@@ -2,7 +2,7 @@
 
 .dropdown_icon {
   position: absolute;
-  top: 0.2rem;
+  top: 0.25rem;
   right: 0.25rem;
   width: 1.25rem;
   pointer-events: none;
@@ -28,8 +28,15 @@
   @apply --font-body-1-dark;
 
   background-color: var(--c-light-gray);
-  border-radius: 3px;
-  padding: 0.25rem 0;
+  border-radius: 2px;
+  padding: 2px 0 0 0;
+  margin: -2px 0 0 0;
+}
+
+.select_group {
+  &:not(:first-child) {
+    border-top: 1px solid var(--c-med-gray);
+  }
 }
 
 .error div,

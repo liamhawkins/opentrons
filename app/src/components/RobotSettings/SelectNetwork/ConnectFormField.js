@@ -1,23 +1,34 @@
 // @flow
 import * as React from 'react'
 
-import {InputField, CheckboxField, DropdownField} from '@opentrons/components'
+import {InputField, CheckboxField} from '@opentrons/components'
+import SelectKey from './SelectKey'
 import {FormTableRow} from './FormTable'
 
-import type {WifiAuthField} from '../../../http-api-client'
+import type {WifiAuthField, WifiKeysList} from '../../../http-api-client'
 
 type Props = {
   field: WifiAuthField,
   value: string,
   showPassword: boolean,
+  keys: ?WifiKeysList,
   onChange: (*) => mixed,
+  onValueChange: (name: string, value: *) => mixed,
   toggleShowPassword: (name: string) => mixed,
+  addKey: File => mixed,
 }
 
 export const CONNECT_FIELD_ID_PREFIX = '__ConnectForm__'
 
 export default function ConnectFormField (props: Props) {
-  const {value, showPassword, onChange, toggleShowPassword} = props
+  const {
+    value,
+    showPassword,
+    keys,
+    onChange,
+    onValueChange,
+    toggleShowPassword,
+  } = props
   const {name, displayName, type, required} = props.field
   const id = `${CONNECT_FIELD_ID_PREFIX}${name}`
   const label = required ? `* ${displayName}:` : `${displayName}:`
@@ -37,12 +48,13 @@ export default function ConnectFormField (props: Props) {
     )
   } else if (type === 'file') {
     input = (
-      <DropdownField
-        disabled
+      <SelectKey
         id={id}
         name={name}
-        onChange={onChange}
-        options={[{name: 'Certificates not yet supported', value: ''}]}
+        value={value}
+        keys={keys}
+        addKey={props.addKey}
+        onValueChange={onValueChange}
       />
     )
   }

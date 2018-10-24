@@ -34,13 +34,16 @@ type SelectProps = {
 }
 
 const SELECT_STYLES = {
-  control: () => ({
-    height: '1.75rem',
-  }),
-  input: () => ({
-    padding: 0,
+  control: () => ({height: '1.75rem'}),
+  input: () => ({padding: 0}),
+  menuList: () => ({padding: '2px 0'}),
+  groupHeading: () => ({
+    margin: 0,
+    borderBottom: '1px solid #9b9b9b',
   }),
 }
+
+const clearStyles = () => null
 
 const getOpts = (og: OptionType | GroupType): OptionList => og.options || [og]
 
@@ -65,13 +68,14 @@ export default class SelectField extends React.Component<SelectProps> {
         isDisabled={disabled}
         placeholder={placeholder}
         styles={SELECT_STYLES}
-        className={className}
         components={{
           Control,
           DropdownIndicator,
           Menu,
+          Group,
           IndicatorSeparator: null,
         }}
+        className={className}
       />
     )
   }
@@ -94,9 +98,16 @@ function DropdownIndicator (props) {
 }
 // custom Menu (options dropdown) component
 function Menu (props) {
+  return <components.Menu {...props} className={styles.select_menu} />
+}
+
+// custom option group wrapper component
+function Group (props) {
   return (
-    <components.Menu {...props}>
-      <div className={styles.select_menu}>{props.children}</div>
-    </components.Menu>
+    <components.Group
+      {...props}
+      className={styles.select_group}
+      getStyles={clearStyles}
+    />
   )
 }
